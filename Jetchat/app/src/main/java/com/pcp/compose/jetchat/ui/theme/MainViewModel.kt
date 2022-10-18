@@ -7,4 +7,8 @@ import kotlinx.coroutines.flow.StateFlow
 class MainViewModel : ViewModel() {
     private val _drawerShouldBeOpened = MutableStateFlow(false)
     val drawerShouldBeOpened: StateFlow<Boolean> = _drawerShouldBeOpened
+
+    fun resetOpenDrawerAction() {
+        _drawerShouldBeOpened.value = false
+    }
 }
