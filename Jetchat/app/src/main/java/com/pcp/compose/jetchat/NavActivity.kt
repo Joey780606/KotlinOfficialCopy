@@ -10,9 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.os.bundleOf
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.pcp.compose.jetchat.components.JetchatDrawer
 import com.pcp.compose.jetchat.conversation.BackPressHandler
 import com.pcp.compose.jetchat.conversation.LocalBackPressedDispatcher
 import com.pcp.compose.jetchat.ui.theme.JetchatTheme
@@ -68,7 +70,27 @@ class NavActivity : ComponentActivity() {
                                 }
                             }
                         }
+
+                        JetchatDrawer( //重要: 這是在 JetchatScaffold.kt
+                            drawerState = drawerState,
+                            onChatClicked = {
+                                findNavController().popBackStack(R.id.nav_home, false)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            },
+                            onProfileClicked = {
+                                val bundle = bundleOf("userId" to it)
+                                findNavController().navigate(R.id.nav_profile, bundle)
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            }
+                        ) {
+                            AndroidViewBinding(ContentMainBinding::inflate)
+                        }
                     }
+
 
                     JetchatTheme {
                         // A surface container using the 'background' color from the theme
