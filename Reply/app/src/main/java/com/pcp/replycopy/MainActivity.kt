@@ -11,6 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.flowWithLifecycle
@@ -68,6 +70,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ReplyCopyTheme {
                 val windowSize = calculateWindowSizeClass(this)
+                val devicePosture by devicePostureFlow.collectAsState()
+                //重要: 上方需要加入 import androidx.compose.runtime.collectAsState 及 androidx.compose.runtime.getValue
+                val uiState by viewModel.uiState.collectAsState()
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
