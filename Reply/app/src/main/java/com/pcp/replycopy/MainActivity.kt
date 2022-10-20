@@ -73,13 +73,18 @@ class MainActivity : ComponentActivity() {
                 val devicePosture by devicePostureFlow.collectAsState()
                 //重要: 上方需要加入 import androidx.compose.runtime.collectAsState 及 androidx.compose.runtime.getValue
                 val uiState by viewModel.uiState.collectAsState()
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+
+                ReplyApp(
+                    windowSize = windowSize,
+                    foldingDevicePosture = devicePosture,
+                    replyHomeUIState = uiState,
+                    closeDetailScreen = {
+                        viewModel.closeDetailScreen()  //處理程式放在 ReplyHomeViewModel
+                    },
+                    navigateToDetail = { emailId, pane ->
+                        viewModel.setSelectedEmail(emailId, pane)
+                    }
+                )
             }
         }
     }
